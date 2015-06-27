@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+
+<html>
+	<head>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600,800' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{% static "judge/foundation/css/foundation.css" %}">
+		<link type="text/css" rel="stylesheet" href="{% static "judge/HomeStyle.css" %}" />
+		<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+		<script src="{% static 'judge/foundation/js/vendor/modernizr.js' %}"></script>
+		<title> The Arena! </title>
+	</head>
+
+	<body>
+		<div id="header">
+			<div id="header-row" class="row">
+				<div id="logo" class="medium-2 large-3 columns">
+					<a href="{% url 'judge:index' %}"><img src="{% static 'judge/arena-logo.png' %}"/></a>
+				</div>
+				<div class="navbar medium-10 large-9 columns">
+					<ul class="navmenu">
+						<li> 
+							<a href="{% url 'judge:index' %}"> Home </a> 
+						</li>
+						<li> 
+							<a href="{% url 'judge:coders' %}"> Leaderboard </a>
+						</li>
+						<li> 
+							<a href="{% url 'judge:problems' %}"> Problems </a>
+						</li>
+						<li> 
+							{% if current %}
+								<a href="{% url profile_link current %}"> Profile </a>
+							{% else %}
+								<a href="{% url profile_link %}"> Profile </a>
+							{% endif %}
+						</li>
+						<li> 
+							<a href="{% url log_link %}"> {{ display }} </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+
+		</div>
+
+		<div class="main">
+			<div class="layer1">
+				<div class="row">
+					<div class="judge-content medium-12 large-12 columns">
+						{% block content %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="layer3">
+			<div class="row">
+				<div class="footer medium-12 large-12 columns">
+				</div>
+			</div>
+		</div>
+
+		<script src="{% static 'judge/foundation/js/vendor/jquery.js' %}"></script>
+	 	<script src="{% static 'judge/foundation/js/foundation.min.js' %}"></script>
+ 		<script>
+   	 		$(document).foundation();
+  		</script>
+	</body>
+</html>

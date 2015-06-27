@@ -1,0 +1,26 @@
+{% extends "judge/base.html" %}
+
+{% load staticfiles %}
+
+{% block content %}
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+<h1> Thank you for your submission. Please wait. </h1>
+
+<script>
+var csrf = "{{ csrf_token }}";
+var tester_url = "{% static 'judge/javascript/_worker.js' %}";
+var post_url = "{{ post_url }}"; 
+var compare_url = "{{ compare_url }}";
+var leaderboard_url = "{{ leaderboard_url }}";
+var function_body = "{{ source_code|escapejs }}";
+var function_vars = "{{ problem.arg_vars|escapejs }}";
+var function_args = eval('[' + "{{ problem.arg_values|escapejs }}" + ']');
+
+var user = "{{ user }}";
+</script>
+
+<script src="{% static 'judge/javascript/_checker.js' %}"></script>
+
+{% endblock %}

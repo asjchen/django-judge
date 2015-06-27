@@ -1,0 +1,47 @@
+{% extends "judge/base.html" %}
+
+{% block content %}
+
+<h1> {{ problem.title }} </h1>
+
+<p> {{ problem.statement }} </p>
+
+<p> The arguments will be passed as "{{ problem.arg_vars }}".</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form method="post" action="{% url 'judge:send' problem.slug %}">
+{% csrf_token %}
+
+{{ submit_form }}
+
+<input type="submit" value="Submit Code"/>
+</form>
+
+
+<a href="{% url 'judge:leaderboard' problem.slug %}"> <p>Leaderboard</p> </a>
+
+{% endblock %}
+
+
+
+<!--
+<h1> {{ problem.title }} </h1>
+
+<p> {{ problem.statement }} </p>
+
+<p> The arguments will be passed as "{{ problem.arg_vars }}"</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form method="post" action="{% url 'judge:send' problem.slug %}">
+{% csrf_token %}
+
+{{ submit_form }}
+
+<input type="submit" value="Submit Code"/>
+</form>
+-->
+
+
+<a href="{% url 'judge:leaderboard' problem.slug %}"> Leaderboard </a>

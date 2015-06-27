@@ -1,0 +1,62 @@
+{% extends "judge/base.html" %}
+
+{% block content %}
+
+<div id="intro" class="medium-12 large-7 columns">
+	<h2>Welcome to The Arena!</h2>
+	<p>The Arena aims to give coders an opportunity to hone their programming skills and practice writing efficient algorithms. As code runs directly through the browser, users write in Javascript for the online judging system to run. </p>
+</div>
+<div class="main-table medium-12 large-5 columns">
+	<table>
+		<thead>
+			<tr>
+				<th colspan="3" style="text-transform: uppercase">
+					Current Arena Leaderboard
+				</th>
+			</tr>
+			<tr>
+				<th> Rank </th>
+				<th> User </th>
+				<th> Score </th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if top_coders_list %}
+				{% for coder in top_coders_list %}
+					<tr>
+						<td> {{ coder.rank }}. </td>
+						<td> {{ coder.name }} </td>
+						<td> {{ coder.composite_score }} </td>
+					</tr>
+				{% endfor %}
+			
+			{% else %}
+				<tr>
+					<td>Not enough users yet.</td>
+					<td></td>
+					<td></td>
+				</tr>
+			{% endif %}
+
+		</tbody>
+	</table>
+</div>
+
+<!--
+
+<h1><a href = "{% url 'judge:problems' %}"> Problems </a></h1>
+
+<h1><a href = "{% url 'judge:coders' %}"> Overall Leaderboard </a></h1>
+
+{% if top_coders_list %}
+	<ul>
+	{% for coder in top_coders_list %}
+		<li>{{ coder.rank }} {{ coder.name }} {{ coder.composite_score }} </li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>Not enough users yet.</p>
+{% endif %}
+-->
+
+{% endblock %}

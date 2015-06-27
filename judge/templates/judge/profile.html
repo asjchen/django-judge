@@ -1,0 +1,14 @@
+{% extends "judge/base.html" %}
+
+{% block content %}
+
+<h1> {{ user.username }} </h1>
+
+<p> Rank: {{ user.coder.overall_rank }} </p>
+<p> Composite Score: {{ user.coder.overall_score }} </p>
+
+{% if current_user == user %}
+<a href="{% url 'judge:password_change' %}"><u><p>Change Password?</p></u></a>
+{% endif %}
+
+{% endblock %}

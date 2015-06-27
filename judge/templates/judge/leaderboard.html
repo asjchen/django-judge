@@ -1,0 +1,80 @@
+{% extends "judge/base.html" %}
+
+{% block content %}
+
+<h1>{{ problem.title }}</h1>
+
+{% if entry %}
+<h3>Your score was {{ entry.score }}.</h3>
+{% endif %}
+
+<div class="main-table medium-12 large-12 columns">
+	<table>
+		<thead>
+			<tr>
+				<th colspan="3" style="text-transform: uppercase">
+					Overall Leaderboard
+				</th>
+			</tr>
+			<tr>
+				<th> Rank </th>
+				<th> User </th>
+				<th> Score </th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if final_scores %}
+				{% for coder in final_scores %}
+					<tr>
+						{% if coder.name == current_user.username %}
+							<td><strong> {{ coder.rank }}. </strong></td>
+							<td><strong><a href="{% url 'judge:profile' coder.name %}"> {{ coder.name }} </a></strong></td>
+							<td><strong> {{ coder.number }} </strong></td>
+						{% else %}
+							<td> {{ coder.rank }}. </td>
+							<td><a href="{% url 'judge:profile' coder.name %}"> {{ coder.name }} </a></td>
+							<td> {{ coder.number }} </td>
+						{% endif %}
+					</tr>
+				{% endfor %}
+			
+			{% else %}
+				<tr>
+					<td>No users yet.</td>
+					<td></td>
+					<td></td>
+				</tr>
+			{% endif %}
+
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+
+
+<!--
+
+<h1>{{ problem.title }} Leaderboard</h1>
+
+{% if entry %}
+<h3>Your score was {{ entry.score }} seconds.</h3>
+{% endif %}
+
+{% if final_scores %}
+
+	<ul>
+	{% for person in final_scores %}
+		<li>
+			{{ person.rank }} 
+			<a href="{% url 'judge:profile' person.name %}"> {{ person.name }} </a>
+			{{ person.number }}
+		</li>
+	{% endfor %}
+	</ul>
+
+{% else %}
+	<p>No users yet.</p>
+{% endif %}
+
+-->

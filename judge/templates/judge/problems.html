@@ -1,0 +1,52 @@
+{% extends "judge/base.html" %}
+
+{% block content %}
+
+<div class="main-table medium-12 large-12 columns">
+	<table>
+		<thead>
+			<tr>
+				<th colspan="1" style="text-transform: uppercase">
+					Problems
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% if problems_list %}
+				{% for problem in problems_list %}
+					<tr>
+						<td> <a href="{% url 'judge:submit' problem.slug %}">{{ problem.title }}</a> </td>
+					</tr>
+				{% endfor %}
+			
+			{% else %}
+				<tr>
+					<td>No problems yet.</td>
+				</tr>
+			{% endif %}
+
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+
+
+
+
+
+<!--
+
+<h1> Problems </h1>
+
+{% if problems_list %}
+	<ul>
+	{% for problem in problems_list %}
+		<li><a href="{% url 'judge:submit' problem.slug %}">{{ problem.title }}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>No problems yet.</p>
+{% endif %}
+
+-->
