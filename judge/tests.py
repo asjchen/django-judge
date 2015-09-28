@@ -41,7 +41,8 @@ class LeaderboardViewTests(TestCase):
 		self.assertContains(response, problem_test.title)
 		self.assertContains(response, "No users yet.")
 		self.assertQuerysetEqual(response.context["final_scores"], [])
-
+	
+	# Many of the user, coder, entry, and problem constructions are unique to their corresponding test, but this covers several non-special case tests
 	def make_objects(self):
 		user1 = create_user("user1", "foo")
 		coder1 = create_coder(user1, 99.0, 1)
