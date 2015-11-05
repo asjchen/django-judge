@@ -2,14 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-class Coder(models.Model):
+class Coder(models.Model): # represents a coder with a user account, a rank, and a composite score
 	user = models.OneToOneField(User)
 	overall_rank = models.IntegerField(default = 0)
 	overall_score = models.DecimalField(max_digits = 6, decimal_places = 3)
 	def __unicode__(self):
 		return self.user.username
 
-class Problem(models.Model):
+class Problem(models.Model): # represents a problem with a full title, a problem statement, a short URL slug, an answer, a set of variables, and a set of test input values
 	title = models.CharField(max_length = 200)
 	statement = models.TextField()
 	slug = models.SlugField()
@@ -19,7 +19,7 @@ class Problem(models.Model):
 	def __unicode__(self):
 		return self.title
 
-class Entry(models.Model):
+class Entry(models.Model): # represents a submission entry by a coder to a problem, contains the solution text and score for the problem
 	coder = models.ForeignKey(Coder)
 	problem = models.ForeignKey(Problem)
 	text = models.TextField()
