@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 from .models import Coder, Problem, Entry
 from .forms import SubmitForm, NewUserForm
 
+# final_scores computes the overall composite scores for all of the active coders
 def final_scores():
 	submissions = Entry.objects.all().order_by("-score") # all submitted code in order of score
 	coder_list = [] # will eventually contain all coder names
@@ -54,6 +55,7 @@ def final_scores():
 		person.save()
 	return final_scores
 
+# problem_scores returns the scores specific to a certain problem
 def problem_scores(submissions):
 	f_scores = []
 	count = 1
@@ -66,6 +68,7 @@ def problem_scores(submissions):
 			count += 1
 	return f_scores
 
+# IndexView dictates the homepage data
 class IndexView(TemplateView):
 	template_name = "judge/index.html"
 	def get_context_data(self, **kwargs): 
@@ -75,6 +78,7 @@ class IndexView(TemplateView):
 		context["top_coders_list"] = final_scores()[:5]
 		return context
 
+# CodersView dictates the entries in the coders' leaderboard
 class CodersView(TemplateView):
 	template_name = "judge/coders.html"
 	def get_context_data(self, **kwargs): 
@@ -83,6 +87,7 @@ class CodersView(TemplateView):
 		context["current_user"] = self.request.user
 		return context
 
+# ProfileView dictates the information of a coder's profile
 class ProfileView(generic.DetailView):
 	model = User
 	slug_field = "username"
@@ -93,12 +98,14 @@ class ProfileView(generic.DetailView):
 		context["current_user"] = self.request.user
 		return context
 
+# ProblemsView dictates the list of problems on the problems index page
 class ProblemsView(generic.ListView):
 	template_name = "judge/problems.html"
 	context_object_name = "problems_list"
 	def get_queryset(self):
 		return Problem.objects.all()
 
+# SubmitView dictates what the client sees upon viewing an individual problem's page 
 class SubmitView(generic.DetailView):
 	model = Problem
 	template_name = "judge/submit.html"
@@ -106,7 +113,8 @@ class SubmitView(generic.DetailView):
 		context = super(SubmitView, self).get_context_data(**kwargs)
 		context["submit_form"] = SubmitForm()
 		return context
-
+		
+# LeaderboaardView dictates a problem's leaderboard
 class LeaderboardView(generic.DetailView):
 	model = Problem
 	template_name = "judge/leaderboard.html"
@@ -118,6 +126,7 @@ class LeaderboardView(generic.DetailView):
 		context["current_user"] = self.request.user
 		return context
 
+# get_entry retrieves a user's form submission
 def get_entry(request, problem_slug):
 	prob = get_object_or_404(Problem, slug=problem_slug)
 	name = request.user
@@ -139,7 +148,7 @@ def get_entry(request, problem_slug):
 		context = {"submit_form": form}
 		return render(request, "judge/submit.html", context)
 
-
+# process_entry retrieves the necessary fields for processing the submission request
 def process_entry(request, problem_slug, source_key):
 	prob = get_object_or_404(Problem, slug=problem_slug)
 	if request.session.get(source_key, None):
@@ -155,6 +164,7 @@ def process_entry(request, problem_slug, source_key):
 	else:
 		raise Http404("Submission not found.")
 
+# compare_answer compares the answer computed by the submission to the actual solution
 def compare_answer(request, problem_slug, source_key):
 	prob = get_object_or_404(Problem, slug=problem_slug)
 	if request.method == "POST":
@@ -168,7 +178,7 @@ def compare_answer(request, problem_slug, source_key):
 	data = { 'same': False }
 	return JsonResponse(data)
 
-
+# to_results dictates how the client sees the "successful submission" page followed by the leaderboard page
 def to_results(request, problem_slug, source_key):
 	prob = get_object_or_404(Problem, slug=problem_slug)
 	if request.method == "POST":
@@ -183,6 +193,7 @@ def to_results(request, problem_slug, source_key):
 		data = { 'score': -1 }
 		return JsonResponse(data)
 
+# entry_leaderboard dictates how the user sees the problem leaderboard
 def entry_leaderboard(request, problem_slug, entry_id):
 	prob = get_object_or_404(Problem, slug=problem_slug)
 	context = { "problem": prob }
@@ -192,6 +203,7 @@ def entry_leaderboard(request, problem_slug, entry_id):
 	context["current_user"] = request.user
 	return render(request, "judge/leaderboard.html", context)
 
+# NewUserView dictates the form that a new user attempting to register sees
 class NewUserView(TemplateView):
 	template_name = "judge/register.html"
 	def get_context_data(self, **kwargs):
@@ -199,6 +211,7 @@ class NewUserView(TemplateView):
 		context["user_form"] = NewUserForm()
 		return context
 
+# register_user collects the new user's account information and creates a coder account
 def register_user(request):
 	if request.method == "POST":
 		form = NewUserForm(request.POST)
