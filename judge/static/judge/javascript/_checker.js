@@ -1,3 +1,5 @@
+// This script uses web workers to run and time the user's code submission. If the code executes for more than 5000
+// milliseconds, then the code should cease running and the script should send a timeout message.
 
 var worker = new Worker(tester_url);
 var output = "";
